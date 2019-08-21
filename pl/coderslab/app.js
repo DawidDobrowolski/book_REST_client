@@ -1,5 +1,5 @@
-var LINK = "http://localhost:8282/books"
-var div = $("div")
+var LINK = "http://localhost:8080/books/"
+var div = $("#books")
 
 $.ajax(LINK).done(function (response) {
     response.forEach(function (item) {
