@@ -108,7 +108,7 @@ function addBook(data){
             type: book_type.val()
 
         }),
-        contentType: 'application/json',
+        contentType: 'application/json'
     }).done(function (item) {
         var newDiv = $("<div>");
         var newH3 = $("<h3>");
@@ -120,10 +120,40 @@ function addBook(data){
         newDiv.attr('data-id', item.id);
         newDiv.append(newButtonEdit).append(newButtonDelete).append($("<div>").hide());
         div.append(newDiv);
-        book_isbn.val("")
-        book_publisher.val("")
-        book_title.val("")
+        book_isbn.val("");
+        book_publisher.val("");
+        book_title.val("");
         book_type.val("")
     })
 
 }
+
+
+$("#addAuthor_button").click(function (e) {
+    var author_firstName = $("#author_firstName");
+    var author_lastName = $("#author_lastName");
+    var author_gender = $("#author_gender");
+    var author_age = $("#author_age");
+    $.ajax({
+        url: LINK_AUTHORS,
+        type: 'POST',
+        data: JSON.stringify({
+            firstName: author_firstName.val(),
+            lastName: author_lastName.val(),
+            gender: author_gender.val(),
+            age: author_age.val()
+
+        }),
+        contentType: 'application/json'
+    }).done(function (item) {
+        console.log()
+        var newOption = $("<option>");
+        newOption.attr("value", item.id).text(item.firstName + " " + item.lastName);
+        $("#book_author").append(newOption);
+        author_firstName.val("");
+        author_lastName.val("");
+        author_age.val("")
+    });
+
+    e.preventDefault();
+});
