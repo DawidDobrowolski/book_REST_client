@@ -43,34 +43,36 @@
             <button id="add">Add</button>
         </form>
     </div>
-<!--    <div id="editBook">-->
-<!--        <h2>-->
-<!--            Edit book-->
-<!--        </h2>-->
-<!--        <form>-->
-<!--            <label for="">-->
-<!--                Title-->
-<!--                <input type="text" id="author_title">-->
-<!--            </label>-->
-<!--            <label for="">-->
-<!--                Author-->
-<!--                <input type="text" id="author_input">-->
-<!--            </label>-->
-<!--            <label for="">-->
-<!--                ISBN-->
-<!--                <input type="text" id="author_isbn">-->
-<!--            </label>-->
-<!--            <label for="">-->
-<!--                Publisher-->
-<!--                <input type="text" id="author_publisher">-->
-<!--            </label>-->
-<!--            <label for="">-->
-<!--                Type-->
-<!--                <input type="text" id="author_type">-->
-<!--            </label>-->
-<!--            <button id="editSubmit">Save</button>-->
-<!--        </form>-->
-<!--    </div>-->
+    <div id="editBook">
+        <h2>
+            Edit book
+        </h2>
+        <form>
+            <input type="hidden" id="book_id_edit">
+            <label>
+                Title
+                <input type="text" id="book_title_edit">
+            </label>
+            <label>
+                Author
+                <select id="book_author_edit">
+                </select>
+            </label><br><br>
+            <label>
+                ISBN
+                <input type="text" id="book_isbn_edit">
+            </label>
+            <label>
+                Publisher
+                <input type="text" id="book_publisher_edit">
+            </label>
+            <label>
+                Type
+                <input type="text" id="book_type_edit">
+            </label>
+            <button id="editSubmit">Save</button>
+        </form>
+    </div>
     <div id="addAuthor">
         <h2>
             Add author
