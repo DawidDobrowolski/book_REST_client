@@ -1,6 +1,7 @@
 var LINK = "http://localhost:8080/books/";
 var LINK_AUTHORS = "http://localhost:8080/authors/";
 var div = $("#books");
+var divAuthors = $("#authors");
 
 getBooks();
 
@@ -29,12 +30,21 @@ function getAuthors() {
             $("#book_author_edit").append(newOption.clone());
             $("#book_author").append(newOption);
 
+            var newDiv = $("<div>");
+            var newH3 = $("<h3>");
+            var newButtonDelete = $("<button>").text("Delete").addClass("author" + item.id).addClass("delete");
+            var newButtonEdit = $("<button>").text("Edit").addClass("author" + item.id).addClass("edit");
+            newDiv.addClass("author" + item.id).addClass("authors").attr('data-id', item.id);
+            newH3.text(item.firstName + " " + item.lastName).attr('data-click', "false").attr('data-id', item.id);
+            newDiv.append(newH3).append(newButtonEdit).append(newButtonDelete).append($("<div>").hide());
+            divAuthors.append(newDiv);
+
         })
     })
 }
 
 
-$("body").on("click", "h3", function (event) {
+$("body").on("click", ".books h3", function (event) {
     if (event.target.dataset.click === 'false') {
         $.ajax(LINK + event.target.dataset.id).done(function (res) {
             var newElement = $("<div>");
@@ -42,6 +52,28 @@ $("body").on("click", "h3", function (event) {
             newElement.append($("<p>").text("Publisher: " + res.publisher));
             newElement.append($("<p>").text("ISBN: " + res.isbn));
             newElement.append($("<p>").text("Type: " + res.type));
+            $(event.target).after(newElement);
+            newElement.css("display", "none");
+            newElement.slideDown();
+            event.target.dataset.click = "true";
+        })
+    } else {
+        $(event.target).parent().find("div").slideUp(800);
+        setTimeout(function () {
+            $(event.target).parent().find("div").remove()
+        }, 800);
+        event.target.dataset.click = "false";
+    }
+
+});
+
+
+$("body").on("click", ".authors h3", function (event) {
+    if (event.target.dataset.click === 'false') {
+        $.ajax(LINK_AUTHORS + event.target.dataset.id).done(function (res) {
+            var newElement = $("<div>");
+            newElement.append($("<p>").text("Age: " + res.age));
+            newElement.append($("<p>").text("Gender: " + res.gender));
             $(event.target).after(newElement);
             newElement.css("display", "none");
             newElement.slideDown();
