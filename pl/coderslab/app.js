@@ -32,8 +32,8 @@ function getAuthors() {
 
             var newDiv = $("<div>");
             var newH3 = $("<h3>");
-            var newButtonDelete = $("<button>").text("Delete").addClass("author" + item.id).addClass("delete");
-            var newButtonEdit = $("<button>").text("Edit").addClass("author" + item.id).addClass("edit");
+            var newButtonDelete = $("<button>").text("Delete").addClass("author" + item.id).addClass("delete_author");
+            var newButtonEdit = $("<button>").text("Edit").addClass("author" + item.id).addClass("edit_author");
             newDiv.addClass("author" + item.id).addClass("authors").attr('data-id', item.id);
             newH3.text(item.firstName + " " + item.lastName).attr('data-click', "false").attr('data-id', item.id);
             newDiv.append(newH3).append(newButtonEdit).append(newButtonDelete).append($("<div>").hide());
@@ -99,6 +99,23 @@ $("body").on("click", ".delete", function (event) {
         $.ajax({
             url: LINK + (event.target).closest("div").dataset.id,
             type: 'DELETE'
+        })
+    }
+});
+
+
+$("body").on("click", ".delete_author", function (event) {
+    if (confirm("Are you sure?")) {
+        var deleteId = (event.target).closest("div").dataset.id;
+        $(event.target).parent().fadeOut(800);
+        setTimeout(function () {
+            $(event.target).parent().remove()
+        }, 800);
+        $.ajax({
+            url: LINK_AUTHORS + (event.target).closest("div").dataset.id,
+            type: 'DELETE'
+        }).done(function (item) {
+            $("option[value=" + deleteId + "]").remove()
         })
     }
 });
@@ -179,8 +196,18 @@ $("#addAuthor_button").click(function (e) {
         console.log()
         var newOption = $("<option>");
         newOption.attr("value", item.id).text(item.firstName + " " + item.lastName);
-        $("#book_author").append(newOption);
+        $("#book_author").append(newOption.clone());
         $("#book_author_edit").append(newOption);
+
+        var newDiv = $("<div>");
+        var newH3 = $("<h3>");
+        var newButtonDelete = $("<button>").text("Delete").addClass("author" + item.id).addClass("delete_author");
+        var newButtonEdit = $("<button>").text("Edit").addClass("author" + item.id).addClass("edit_author");
+        newDiv.addClass("author" + item.id).addClass("authors").attr('data-id', item.id);
+        newH3.text(item.firstName + " " + item.lastName).attr('data-click', "false").attr('data-id', item.id);
+        newDiv.append(newH3).append(newButtonEdit).append(newButtonDelete).append($("<div>").hide());
+        divAuthors.append(newDiv);
+
         author_firstName.val("");
         author_lastName.val("");
         author_age.val("")
@@ -211,6 +238,24 @@ $("body").on("click", ".edit", function (event) {
 });
 
 
+$("body").on("click", ".edit_author", function (event) {
+    $("#addAuthor").hide();
+    $("#editAuthor").show();
+    $.ajax(LINK_AUTHORS + (event.target).closest("div").dataset.id).done(function (res) {
+        var author_firstName = $("#author_firstName_edit");
+        var author_lastName = $("#author_lastName_edit");
+        var author_gender = $("#author_gender_edit");
+        var author_age = $("#author_age_edit");
+        var author_id = $("#author_id_edit");
+        author_firstName.val(res.firstName);
+        author_lastName.val(res.lastName);
+        author_gender.val(res.gender);
+        author_age.val(res.age);
+        author_id.val(res.id);
+    })
+});
+
+
 $("#editSubmit").click(function (e) {
     var book_author = $("#book_author_edit");
     $.ajax({
@@ -230,7 +275,7 @@ function editBook(data) {
     var book_title = $("#book_title_edit");
     var book_type = $("#book_type_edit");
     $.ajax({
-        url: LINK +$("#book_id_edit").val() ,
+        url: LINK + $("#book_id_edit").val(),
         type: 'PUT',
         data: JSON.stringify({
             author:
@@ -252,9 +297,8 @@ function editBook(data) {
         $("#addBook").show()
         $("#editBook").hide()
         var editId = $("#book_id_edit").val();
-        var editDiv = $("div[data-id=" + editId);
+        var editDiv = $("div.book" + editId);
         editDiv.empty();
-
         var newH3 = $("<h3>");
         var newButtonDelete = $("<button>").text("Delete").addClass("book" + editId).addClass("delete");
         var newButtonEdit = $("<button>").text("Edit").addClass("book" + editId).addClass("edit");
@@ -270,3 +314,44 @@ function editBook(data) {
     })
 
 }
+
+
+$("#editAuthor_button").click(function (e) {
+    var author_firstName = $("#author_firstName_edit");
+    var author_lastName = $("#author_lastName_edit");
+    var author_gender = $("#author_gender_edit");
+    var author_age = $("#author_age_edit");
+    var author_id = $("#author_id_edit");
+    $.ajax({
+        url: LINK_AUTHORS + author_id.val(),
+        type: 'PUT',
+        data: JSON.stringify({
+            id: author_id.val(),
+            firstName: author_firstName.val(),
+            lastName: author_lastName.val(),
+            gender: author_gender.val(),
+            age: author_age.val()
+        }),
+        contentType: 'application/json'
+    }).done(function (item) {
+        $("#addAuthor").show()
+        $("#editAuthor").hide()
+        var editId = author_id.val();
+        var editDiv = $("div.author" + editId);
+        editDiv.empty();
+        var newH3 = $("<h3>");
+        var newButtonDelete = $("<button>").text("Delete").addClass("author" + editId).addClass("delete_author");
+        var newButtonEdit = $("<button>").text("Edit").addClass("author" + editId).addClass("edit_author");
+        newH3.text(item.firstName + " " + item.lastName).attr('data-click', "false").attr('data-id', editId);
+        editDiv.append(newH3).append(newButtonEdit).append(newButtonDelete).append($("<div>").hide());
+
+        var newOption = $("option[value=" + editId + "]");
+        newOption.text(item.firstName + " " + item.lastName);
+
+        author_firstName.val("");
+        author_lastName.val("");
+        author_age.val("");
+        author_id.val("");
+    });
+    e.preventDefault();
+});

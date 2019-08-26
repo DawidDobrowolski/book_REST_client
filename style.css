@@ -1,0 +1,57 @@
+h3{
+
+  cursor: pointer;
+
+}
+
+section{
+
+  display: flex;
+
+  justify-content: space-between;
+
+}
+
+section > div{
+
+  width: 45%;
+
+  box-sizing: border-box;
+
+  padding: 20px;
+
+  border: 1px solid #000000;
+
+}
+
+section input{
+
+  background: #ffffff;
+
+  margin: 16px;
+
+  padding: 8px;
+
+  width: 100%;
+
+  box-sizing: border-box;
+
+  border: 1px solid #000000;
+
+  margin-left: 0;
+
+  margin-right: 0;
+
+}
+
+#editBook{
+
+  display: none;
+
+}
+
+#editAuthor{
+
+  display: none;
+
+}

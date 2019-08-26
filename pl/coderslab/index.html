@@ -107,6 +107,34 @@
             <button id="addAuthor_button">Add</button>
         </form>
     </div>
+    <div id="editAuthor">
+        <h2>
+            Edit author
+        </h2>
+        <form>
+            <input type="hidden" id="author_id_edit">
+            <label>
+                First name
+                <input type="text" id="author_firstName_edit">
+            </label>
+            <label>
+                Last name
+                <input type="text" id="author_lastName_edit">
+            </label>
+            <label>
+                Gender
+                <select id="author_gender_edit">
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                </select>
+            </label><br><br>
+            <label>
+                Age
+                <input type="text" id="author_age_edit">
+            </label>
+            <button id="editAuthor_button">Save</button>
+        </form>
+    </div>
 </section>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script src="./app.js"></script>
